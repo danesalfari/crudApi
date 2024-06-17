@@ -55,7 +55,7 @@ class studentController extends Controller
             'phone' => $request->phone,
             'language' => $request->language
         ]);
-        
+
         if (!$student) {
             $data = [
                 'message' => 'Error al crear el estudiante',
@@ -71,4 +71,43 @@ class studentController extends Controller
 
 
     }
+
+    public function show($id)
+    {
+        $student = Student::find($id);
+        if(!$student){
+            $data = [
+                'message' => 'Estudiante no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        $data = [
+            'student' => $student,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
+
+    public function destroy($id)
+    {
+        $student = Student::find($id);
+
+        if(!$student){
+            $data = [
+                'message' => 'Estudiante no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        
+        $student->delete();
+
+        $data = [
+            'message' => 'Estudiante eliminado',
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
+
 }
